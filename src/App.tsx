@@ -5,7 +5,9 @@ import './app.styles.scss';
 
 function App() {
   return (
-    <GamePage />
+    <main className="main">
+      <GamePage />
+    </main>
   );
 }
 

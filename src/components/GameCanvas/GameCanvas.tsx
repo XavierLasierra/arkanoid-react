@@ -15,7 +15,8 @@ export default function GameCanvas({ gameMatrix, setGameMatrix }: IGameCanvasPro
 
     matrix.forEach((matrixRow, indexY) => {
       matrixRow.forEach((fillType: number, indexX) => {
-        context.fillStyle = fillType ? '#FFF' : 'transparent';
+        context.beginPath();
+        context.fillStyle = fillType ? '#FFF' : '#000';
         context.strokeStyle = '#000';
         context.lineWidth = '6';
         context.rect(

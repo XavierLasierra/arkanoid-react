@@ -14,5 +14,7 @@ export interface IGameCanvasProps {
 }
 
 export interface IBallProps {
-    dohCoordinateX: number
+    dohCoordinateX: number,
+    isGameActive: boolean,
+    ballCoordinates: number[]
 }
