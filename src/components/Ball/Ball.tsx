@@ -4,6 +4,8 @@ import {
 } from '../../constants/gameBoard.constants';
 import { IBallProps } from '../../types/interfaces';
 
+import './ball.styles.scss';
+
 export default function Ball({ dohCoordinateX, ballCoordinates, isGameActive }: IBallProps) {
   const ballStyles = {
     width: ballSize.width,
@@ -15,6 +17,6 @@ export default function Ball({ dohCoordinateX, ballCoordinates, isGameActive }: 
     transition: isGameActive ? 'transform 0.15s ease' : 'none',
   };
   return (
-    <div style={ballStyles} />
+    <div style={ballStyles} className="ball" />
   );
 }

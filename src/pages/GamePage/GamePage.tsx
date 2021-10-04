@@ -12,7 +12,6 @@ const gamePageStyles = {
   height: '100vh',
   backgroundColor: '#000',
   border: '5px solid #FFF',
-  margin: '0px 200px',
 };
 
 export default function GamePage() {
@@ -39,9 +38,10 @@ export default function GamePage() {
     return clientX;
   }
 
-  function handleMouseMove({ persist, clientX }: any) {
+  function handleMouseMove({ persist, clientX, target }: any) {
     persist();
-    const coordinateX = handleDohPosition(clientX - 200);
+
+    const coordinateX = handleDohPosition(clientX - target.getBoundingClientRect().left);
 
     setDohCoordinateX(coordinateX);
     setDohMatrix(handleDohMatrixChange(coordinateX, dohMatrix));
