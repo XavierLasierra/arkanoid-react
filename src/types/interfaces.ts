@@ -5,5 +5,14 @@ interface IDohSize {
 
 export interface IDohProps {
     positionX: number,
-    dohSize: IDohSize
+    dohSize: IDohSize,
+}
+
+export interface IGameCanvasProps {
+    gameMatrix: number[][],
+    setGameMatrix: any
+}
+
+export interface IBallProps {
+    dohCoordinateX: number
 }

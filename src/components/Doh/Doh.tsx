@@ -6,16 +6,10 @@ export default function Doh({ positionX, dohSize } : IDohProps) {
     transform: `translate(${positionX - dohSize.width / 2}px, 0px)`,
     width: `${dohSize.width}px`,
     height: `${dohSize.height}px`,
-    backgroundColor: 'red',
+    backgroundColor: '#FFF',
   };
 
   return (
     <div style={dohStyles} />
   );
 }
-
-/*
-width: '200px',
-height: '20px',
-background-color: 'red'
-*/
