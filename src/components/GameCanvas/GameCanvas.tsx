@@ -17,7 +17,7 @@ export default function GameCanvas({ gameMatrix, setGameMatrix }: IGameCanvasPro
       matrixRow.forEach((fillType: number, indexX) => {
         context.beginPath();
         context.fillStyle = fillType ? '#FFF' : '#000';
-        context.strokeStyle = '#000';
+        context.strokeStyle = '#FFF';
         context.lineWidth = '6';
         context.rect(
           indexX * widthSize,

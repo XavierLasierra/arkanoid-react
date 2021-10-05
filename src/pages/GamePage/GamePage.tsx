@@ -24,7 +24,8 @@ export default function GamePage() {
   const [moveTime, setMoveTime] = useState(100);
 
   function handleDohMatrixChange(coordinateX: number, matrix: number[]) {
-    const coordinate = Math.round((coordinateX * dohMatrix.length) / (gameBoardSize.width)) - 1;
+    let coordinate = Math.ceil((coordinateX * dohMatrix.length) / (gameBoardSize.width)) - 1;
+    if (coordinate === 0) coordinate = 1;
     return matrix.map((position, index) => ((index >= coordinate - 1 && index <= coordinate + 1)
       ? 1 : 0));
   }
@@ -45,6 +46,7 @@ export default function GamePage() {
 
     setDohCoordinateX(coordinateX);
     setDohMatrix(handleDohMatrixChange(coordinateX, dohMatrix));
+    console.log(dohMatrix);
   }
 
   function handleGameStart() {
