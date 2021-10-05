@@ -1,0 +1,22 @@
+@import "./variables";
+
+%button {
+  background-color: transparent;
+  color: $main-color;
+  border: 4px solid $main-color;
+  font-family: $main-font;
+  font-size: $big-size;
+  width: 6rem;
+  height: 3rem;
+  transition: 0.1s;
+
+  &:hover {
+    background-color: $main-color;
+    color: $background-color;
+    box-shadow: 0 0 10px $main-color;
+  }
+
+  &:active {
+    font-size: $normal-size;
+  }
+}

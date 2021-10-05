@@ -1,4 +1,4 @@
-@import "../../styles/variables";
+@import "../../styles/variables", "../../styles/extends";
 
 .game-information {
   width: 600px;
@@ -19,6 +19,12 @@
       color: $detail-color;
     }
   }
+
+  &__buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
 }
 
 .web-title {
@@ -33,4 +39,8 @@
     font-family: $main-font;
     font-size: $big-size;
   }
+}
+
+.button {
+  @extend %button;
 }

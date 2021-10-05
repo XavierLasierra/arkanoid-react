@@ -15,6 +15,10 @@ export default function GameInformation() {
         <a className="game-information__game-link" href="https://en.wikipedia.org/wiki/Arkanoid">arcanoid</a>
         .
       </p>
+      <div className="game-information__buttons">
+        <button className="button" type="button">START</button>
+        <button className="button" type="button">EDIT</button>
+      </div>
     </section>
   );
 }
