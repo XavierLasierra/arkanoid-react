@@ -1,0 +1,36 @@
+@import "../../styles/variables";
+
+.game-information {
+  width: 600px;
+  padding: 1rem;
+
+  &__description {
+    color: $main-color;
+    font-family: $main-font;
+    font-size: $normal-size;
+  }
+
+  &__game-link {
+    text-decoration: none;
+    color: $main-color;
+    font-weight: bold;
+
+    &:hover {
+      color: $detail-color;
+    }
+  }
+}
+
+.web-title {
+  &__main-title {
+    color: $main-color;
+    font-family: $main-font;
+    font-size: $title-size;
+    font-weight: bold;
+  }
+  &__subtitle {
+    color: $main-color;
+    font-family: $main-font;
+    font-size: $big-size;
+  }
+}

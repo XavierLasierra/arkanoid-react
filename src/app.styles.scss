@@ -1,9 +1,9 @@
-@import "./styles/reset";
+@import "./styles/reset", "./styles/variables";
 
 .main {
   width: 100vw;
-  background-color: #000;
+  background-color: $background-color;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   min-width: 1000px;
 }
