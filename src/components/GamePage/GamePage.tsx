@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Ball from '../Ball/Ball';
 import Doh from '../Doh/Doh';
@@ -8,6 +8,7 @@ import GameCanvas from '../GameCanvas/GameCanvas';
 import {
   dohSize, gameBoardSize, dohGameBoard,
 } from '../../constants/gameBoard.constants';
+import { saveBoardChanges } from '../../redux/actions/gameState.creator';
 
 const gamePageStyles = {
   width: `${gameBoardSize.width + 10}px`,
@@ -17,7 +18,11 @@ const gamePageStyles = {
 };
 
 export default function GamePage() {
-  const { canPlay, canEdit, currentBoard } = useSelector((store:any) => store.gameState);
+  const dispatch = useDispatch();
+  const gameState = useSelector((store:any) => store.gameState);
+  const {
+    currentBoard, canPlay, canEdit, save,
+  } = gameState;
   const boards = useSelector((store: any) => store.boards);
   const [dohCoordinateX, setDohCoordinateX] = useState(gameBoardSize.width / 2);
   const [gameMatrix, setGameMatrix] = useState([[0]]);
@@ -28,9 +33,15 @@ export default function GamePage() {
   const [moveTime, setMoveTime] = useState(100);
 
   useEffect(() => {
-    setGameMatrix(boards[currentBoard]);
+    setGameMatrix(JSON.parse(JSON.stringify(boards[currentBoard])));
     setBallCoordinates([0, boards[currentBoard].length - 1]);
-  }, [boards]);
+  }, [gameState]);
+
+  useEffect(() => {
+    if (save) {
+      dispatch(saveBoardChanges(gameMatrix, currentBoard));
+    }
+  }, [save]);
 
   function handleDohMatrixChange(coordinateX: number, matrix: number[]) {
     const coordinate = Math.ceil((coordinateX * dohMatrix.length) / (gameBoardSize.width)) - 1;
@@ -113,7 +124,7 @@ export default function GamePage() {
       setMoveTime(100);
       return setBallCoordinates([finalX, finalY]);
     }
-    setMoveTime(10);
+    setMoveTime(0);
     return setBallCoordinates([...ballCoordinates]);
   }
 

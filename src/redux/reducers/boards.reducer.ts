@@ -10,6 +10,11 @@ export default function gameStateReducer(boards = initialState, action: any) {
         initialState[0],
       ];
       break;
+    case gameStateActions.SAVE_EDIT:
+      newBoards = newBoards.map((board, index) => (index === action.saveBoard
+        ? action.data
+        : board));
+      break;
     default:
       break;
   }

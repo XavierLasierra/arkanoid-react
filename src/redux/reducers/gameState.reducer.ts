@@ -18,12 +18,28 @@ export default function gameStateReducer(gameState = initialState, action: any) 
         canEdit: true,
       };
       break;
+    case gameStateActions.SAVE_EDIT:
+    case gameStateActions.DISCARD_EDIT:
+      newGameState = {
+        ...newGameState,
+        canPlay: false,
+        canEdit: false,
+        save: false,
+      };
+      break;
     case gameStateActions.SELECT_BOARD:
       newGameState = {
         ...newGameState,
         currentBoard: action.data,
       };
       break;
+    case gameStateActions.START_SAVE: {
+      newGameState = {
+        ...newGameState,
+        save: true,
+      };
+      break;
+    }
     default:
       break;
   }
