@@ -4,7 +4,7 @@ export const gameBoardSize = {
 };
 
 export const dohSize = {
-  width: gameBoardSize.width * (2.25 / 15),
+  width: gameBoardSize.width * (2 / 15),
   height: 20,
 };
 
