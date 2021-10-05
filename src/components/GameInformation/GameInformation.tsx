@@ -52,6 +52,8 @@ export default function GameInformation() {
             <div className="game-information__demos">
               {boards.map((board: number[][], index: number) => (
                 <SmallGameCanvas
+                  // eslint-disable-next-line react/no-array-index-key
+                  key={`board-${index}`}
                   board={board}
                   currentBoard={index}
                 />
