@@ -1,0 +1,48 @@
+@import "../../styles/variables", "../../styles/extends";
+
+.information-container {
+  width: 600px;
+  padding: 1rem;
+}
+
+.game-information {
+  &__description {
+    color: $main-color;
+    font-family: $main-font;
+    font-size: $normal-size;
+  }
+
+  &__game-link {
+    text-decoration: none;
+    color: $main-color;
+    font-weight: bold;
+
+    &:hover {
+      color: $detail-color;
+    }
+  }
+
+  &__buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+.web-title {
+  &__main-title {
+    color: $main-color;
+    font-family: $main-font;
+    font-size: $title-size;
+    font-weight: bold;
+  }
+  &__subtitle {
+    color: $main-color;
+    font-family: $main-font;
+    font-size: $big-size;
+  }
+}
+
+.button {
+  @extend %button;
+}

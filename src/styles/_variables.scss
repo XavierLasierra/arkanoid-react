@@ -1,0 +1,15 @@
+$main-color: #fff;
+
+$background-color: #000;
+$detail-color: #0ef;
+
+$title-size: 2.5rem;
+$big-size: 1.5rem;
+$normal-size: 1rem;
+
+@font-face {
+  font-family: pixelFont;
+  src: url(../fonts/04b03.ttf.woff);
+}
+
+$main-font: pixelFont, sans-serif;
