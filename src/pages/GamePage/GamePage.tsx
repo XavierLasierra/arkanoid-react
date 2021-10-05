@@ -46,7 +46,6 @@ export default function GamePage() {
 
     setDohCoordinateX(coordinateX);
     setDohMatrix(handleDohMatrixChange(coordinateX, dohMatrix));
-    console.log(dohMatrix);
   }
 
   function handleGameStart() {
