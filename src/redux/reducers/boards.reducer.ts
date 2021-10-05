@@ -15,6 +15,9 @@ export default function gameStateReducer(boards = initialState, action: any) {
         ? action.data
         : board));
       break;
+    case gameStateActions.DELETE_BOARD:
+      newBoards = newBoards.filter((board, index) => index !== action.data);
+      break;
     default:
       break;
   }

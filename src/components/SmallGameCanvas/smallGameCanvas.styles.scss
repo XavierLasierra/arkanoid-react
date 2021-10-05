@@ -4,4 +4,8 @@
   border: 4px solid $main-color;
   margin: 100px;
   background-color: transparent;
+
+  &:hover {
+    box-shadow: 0 0 10px $main-color;
+  }
 }
