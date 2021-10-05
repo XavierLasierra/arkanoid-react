@@ -1,9 +1,11 @@
 @import "../../styles/variables", "../../styles/extends";
 
-.game-information {
+.information-container {
   width: 600px;
   padding: 1rem;
+}
 
+.game-information {
   &__description {
     color: $main-color;
     font-family: $main-font;
