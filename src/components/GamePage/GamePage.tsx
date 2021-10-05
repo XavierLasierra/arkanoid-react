@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import Ball from '../../components/Ball/Ball';
-import Doh from '../../components/Doh/Doh';
-import GameCanvas from '../../components/GameCanvas/GameCanvas';
+import Ball from '../Ball/Ball';
+import Doh from '../Doh/Doh';
+import GameCanvas from '../GameCanvas/GameCanvas';
 
 import {
   dohSize, gameBoard1, gameBoardSize, dohGameBoard,
