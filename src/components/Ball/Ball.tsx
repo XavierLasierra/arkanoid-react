@@ -14,7 +14,7 @@ export default function Ball({ dohCoordinateX, ballCoordinates, isGameActive }: 
     backgroundColor: '#00F',
     boxShadow: '0 0 20px #0CF',
     transform: isGameActive ? `translate(${(ballSize.width / 2) + (ballCoordinates[0] / dohGameBoard.length) * gameBoardSize.width}px, ${-gameBoardSize.height + (ballCoordinates[1] / dohGameBoard.length) * gameBoardSize.height}px)` : `translate(${dohCoordinateX - ballSize.width / 2}px, ${-ballSize.heigth}px)`,
-    transition: isGameActive ? 'transform 0.15s linear' : 'none',
+    transition: isGameActive ? 'transform 0.1s linear' : 'none',
   };
   return (
     <div style={ballStyles} className="ball" />
