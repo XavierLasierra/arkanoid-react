@@ -48,9 +48,11 @@ export default function GameCanvas({ gameMatrix, setGameMatrix, canEdit }: IGame
     const positionY = Math.floor((clientY - target.getBoundingClientRect().top)
     * (gameMatrix.length / gameBoardSize.height));
 
-    const aux = gameMatrix;
-    aux[positionY][positionX] = aux[positionY][positionX] === 0 ? 1 : 0;
-    setGameMatrix([...aux]);
+    if (positionY < gameMatrix.length - 2) {
+      const aux = gameMatrix;
+      aux[positionY][positionX] = aux[positionY][positionX] === 0 ? 1 : 0;
+      setGameMatrix([...aux]);
+    }
   }
 
   return (
