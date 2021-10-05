@@ -6,7 +6,7 @@ import Doh from '../Doh/Doh';
 import GameCanvas from '../GameCanvas/GameCanvas';
 
 import {
-  dohSize, gameBoard1, gameBoardSize, dohGameBoard,
+  dohSize, gameBoardSize, dohGameBoard,
 } from '../../constants/gameBoard.constants';
 
 const gamePageStyles = {
@@ -17,14 +17,20 @@ const gamePageStyles = {
 };
 
 export default function GamePage() {
-  const { canPlay } = useSelector((store:any) => store.gameState);
+  const { canPlay, currentBoard } = useSelector((store:any) => store.gameState);
+  const boards = useSelector((store: any) => store.boards);
   const [dohCoordinateX, setDohCoordinateX] = useState(gameBoardSize.width / 2);
-  const [gameMatrix, setGameMatrix] = useState(gameBoard1);
+  const [gameMatrix, setGameMatrix] = useState([[0]]);
   const [dohMatrix, setDohMatrix] = useState(dohGameBoard);
   const [isGameActive, setIsGameActive] = useState(false);
-  const [ballCoordinates, setBallCoordinates] = useState([0, gameMatrix.length - 1]);
+  const [ballCoordinates, setBallCoordinates] = useState([0, 0]);
   const [ballDirection, setBallDirection] = useState([0, -1]);
   const [moveTime, setMoveTime] = useState(100);
+
+  useEffect(() => {
+    setGameMatrix(boards[currentBoard]);
+    setBallCoordinates([0, boards[currentBoard].length - 1]);
+  }, [currentBoard]);
 
   function handleDohMatrixChange(coordinateX: number, matrix: number[]) {
     const coordinate = Math.ceil((coordinateX * dohMatrix.length) / (gameBoardSize.width)) - 1;

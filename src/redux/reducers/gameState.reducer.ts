@@ -6,6 +6,7 @@ export default function gameStateReducer(gameState = initialState, action: any) 
   switch (action.type) {
     case gameStateActions.START_GAME:
       newGameState = {
+        ...newGameState,
         canPlay: true,
         canEdit: false,
       };
