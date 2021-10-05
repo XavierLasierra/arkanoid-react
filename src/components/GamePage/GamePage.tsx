@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Ball from '../Ball/Ball';
 import Doh from '../Doh/Doh';
 import GameCanvas from '../GameCanvas/GameCanvas';
 
 import {
-  dohSize, gameBoard1, gameBoardSize, dohGameBoard,
+  dohSize, gameBoardSize, dohGameBoard,
 } from '../../constants/gameBoard.constants';
+import { saveBoardChanges } from '../../redux/actions/gameState.creator';
 
 const gamePageStyles = {
   width: `${gameBoardSize.width + 10}px`,
@@ -17,14 +18,30 @@ const gamePageStyles = {
 };
 
 export default function GamePage() {
-  const { canPlay } = useSelector((store:any) => store.gameState);
+  const dispatch = useDispatch();
+  const gameState = useSelector((store:any) => store.gameState);
+  const {
+    currentBoard, canPlay, canEdit, save,
+  } = gameState;
+  const boards = useSelector((store: any) => store.boards);
   const [dohCoordinateX, setDohCoordinateX] = useState(gameBoardSize.width / 2);
-  const [gameMatrix, setGameMatrix] = useState(gameBoard1);
+  const [gameMatrix, setGameMatrix] = useState([[0]]);
   const [dohMatrix, setDohMatrix] = useState(dohGameBoard);
   const [isGameActive, setIsGameActive] = useState(false);
-  const [ballCoordinates, setBallCoordinates] = useState([0, gameMatrix.length - 1]);
+  const [ballCoordinates, setBallCoordinates] = useState([0, 0]);
   const [ballDirection, setBallDirection] = useState([0, -1]);
   const [moveTime, setMoveTime] = useState(100);
+
+  useEffect(() => {
+    setGameMatrix(JSON.parse(JSON.stringify(boards[currentBoard])));
+    setBallCoordinates([0, boards[currentBoard].length - 1]);
+  }, [gameState]);
+
+  useEffect(() => {
+    if (save) {
+      dispatch(saveBoardChanges(gameMatrix, currentBoard));
+    }
+  }, [save]);
 
   function handleDohMatrixChange(coordinateX: number, matrix: number[]) {
     const coordinate = Math.ceil((coordinateX * dohMatrix.length) / (gameBoardSize.width)) - 1;
@@ -42,6 +59,8 @@ export default function GamePage() {
   }
 
   function handleMouseMove({ persist, clientX, target }: any) {
+    if (!canPlay) return;
+
     persist();
 
     const coordinateX = handleDohPosition(clientX - target.getBoundingClientRect().left);
@@ -53,7 +72,7 @@ export default function GamePage() {
   function handleGameStart() {
     if (!isGameActive && canPlay) {
       setIsGameActive(true);
-      const initialCoordinateX = Math.round(
+      const initialCoordinateX = Math.ceil(
         (dohCoordinateX * gameMatrix[0].length) / (gameBoardSize.width),
       ) - 1;
 
@@ -98,7 +117,8 @@ export default function GamePage() {
     setBallDirection(nextBallDirection);
     const finalX = ballCoordinates[0] + nextBallDirection[0];
     const finalY = ballCoordinates[1] + nextBallDirection[1];
-    if (gameMatrix[finalY][finalX] === 0
+    if (!gameMatrix[finalY][finalX]
+      && gameMatrix[finalY][finalX] === 0
       && gameMatrix[ballCoordinates[1]][finalX] === 0
       && gameMatrix[finalY][ballCoordinates[0]] === 0) {
       setMoveTime(100);
@@ -123,12 +143,14 @@ export default function GamePage() {
       role="button"
       tabIndex={0}
     >
-      <GameCanvas gameMatrix={gameMatrix} setGameMatrix={setGameMatrix} />
+      <GameCanvas gameMatrix={gameMatrix} setGameMatrix={setGameMatrix} canEdit={canEdit} />
+      {canPlay && (
       <Ball
         dohCoordinateX={dohCoordinateX}
         isGameActive={isGameActive}
         ballCoordinates={ballCoordinates}
       />
+      )}
       <Doh positionX={dohCoordinateX} dohSize={dohSize} />
     </section>
   );

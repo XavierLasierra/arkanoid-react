@@ -10,11 +10,17 @@ export interface IDohProps {
 
 export interface IGameCanvasProps {
     gameMatrix: number[][],
-    setGameMatrix: any
+    setGameMatrix: any,
+    canEdit: boolean
 }
 
 export interface IBallProps {
     dohCoordinateX: number,
     isGameActive: boolean,
     ballCoordinates: number[]
+}
+
+export interface ISmallGameCanvasProps {
+  board: number[][],
+  currentBoard: number
 }

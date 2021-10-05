@@ -5,7 +5,7 @@ import './doh.styles.scss';
 
 export default function Doh({ positionX, dohSize } : IDohProps) {
   const dohStyles = {
-    transform: `translate(${positionX - dohSize.width / 2}px, ${-dohSize.height * 1.5}px)`,
+    transform: `translate(${positionX - dohSize.width / 2}px, 0px)`,
     width: `${dohSize.width}px`,
     height: `${dohSize.height}px`,
     backgroundColor: '#FFF',

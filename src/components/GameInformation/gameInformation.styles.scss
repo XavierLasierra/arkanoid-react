@@ -2,14 +2,14 @@
 
 .information-container {
   width: 600px;
-  padding: 1rem;
+  padding: 3rem 0;
 }
 
 .game-information {
+  margin-top: 3rem;
+
   &__description {
-    color: $main-color;
-    font-family: $main-font;
-    font-size: $normal-size;
+    @extend %text;
   }
 
   &__game-link {
@@ -26,6 +26,19 @@
     width: 100%;
     display: flex;
     justify-content: space-around;
+    margin-top: 3rem;
+  }
+
+  &__demos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+
+    & * {
+      margin: 5px;
+    }
   }
 }
 
@@ -45,4 +58,16 @@
 
 .button {
   @extend %button;
+
+  &--wide {
+    width: 10rem;
+  }
+}
+
+.add-button {
+  background-color: $main-color;
+  width: 3rem;
+  height: 3rem;
+  font-size: 2rem;
+  border: none;
 }
