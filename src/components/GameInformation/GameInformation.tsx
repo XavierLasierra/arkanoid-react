@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MAX_BOARDS } from '../../constants/gameBoard.constants';
-import { canPlayState, createBoard } from '../../redux/actions/gameState.creator';
+import { canEditState, canPlayState, createBoard } from '../../redux/actions/gameState.creator';
 import EditingInformation from '../EditingInformation/EditingInformation';
 import PlayingInformation from '../PlayingInformation/PlayingInformation';
 import SmallGameCanvas from '../SmallGameCanvas/SmallGameCanvas';
@@ -17,6 +17,10 @@ export default function GameInformation() {
     dispatch(canPlayState());
   }
 
+  function handleCanEdit() {
+    dispatch(canEditState());
+  }
+
   function handleBoardCreation() {
     dispatch(createBoard());
   }
@@ -27,14 +31,14 @@ export default function GameInformation() {
 
   return (
     <div className="information-container">
+      <div className="web-title">
+        <h1 className="web-title__main-title">Arkanoid</h1>
+        <h2 className="web-title__subtitle">by Xavier Lasierra</h2>
+      </div>
       {(canPlay || canEdit)
         ? userInteractive
         : (
           <section className="game-information">
-            <div className="web-title">
-              <h1 className="web-title__main-title">Arkanoid</h1>
-              <h2 className="web-title__subtitle">by Xavier Lasierra</h2>
-            </div>
             <p className="game-information__description">
               This application is a simple version of the arcade game
               {' '}
@@ -43,7 +47,7 @@ export default function GameInformation() {
             </p>
             <div className="game-information__buttons">
               <button className="button" type="button" onClick={handleCanPlay}>START</button>
-              <button className="button" type="button">EDIT</button>
+              <button className="button" type="button" onClick={handleCanEdit}>EDIT</button>
             </div>
             <div className="game-information__demos">
               {boards.map((board: number[][], index: number) => (

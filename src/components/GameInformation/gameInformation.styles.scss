@@ -2,15 +2,14 @@
 
 .information-container {
   width: 600px;
-  padding: 1rem;
+  padding: 3rem 0;
 }
 
 .game-information {
+  margin-top: 3rem;
+
   &__description {
-    color: $main-color;
-    font-family: $main-font;
-    font-size: $normal-size;
-    margin-top: 3rem;
+    @extend %text;
   }
 
   &__game-link {

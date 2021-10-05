@@ -1,0 +1,21 @@
+@import "../../styles/variables", "../../styles/extends";
+
+.edit-information {
+  margin-top: 3rem;
+
+  &__description {
+    @extend %text;
+  }
+
+  &__buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 6rem;
+  }
+}
+
+.button {
+  @extend %button;
+  width: 8rem;
+}

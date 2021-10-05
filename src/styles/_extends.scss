@@ -20,3 +20,9 @@
     font-size: $normal-size;
   }
 }
+
+%text {
+  color: $main-color;
+  font-family: $main-font;
+  font-size: $normal-size;
+}

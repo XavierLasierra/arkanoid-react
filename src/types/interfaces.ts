@@ -10,7 +10,8 @@ export interface IDohProps {
 
 export interface IGameCanvasProps {
     gameMatrix: number[][],
-    setGameMatrix: any
+    setGameMatrix: any,
+    canEdit: boolean
 }
 
 export interface IBallProps {

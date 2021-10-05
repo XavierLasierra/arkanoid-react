@@ -11,6 +11,13 @@ export default function gameStateReducer(gameState = initialState, action: any) 
         canEdit: false,
       };
       break;
+    case gameStateActions.START_EDIT:
+      newGameState = {
+        ...newGameState,
+        canPlay: false,
+        canEdit: true,
+      };
+      break;
     case gameStateActions.SELECT_BOARD:
       newGameState = {
         ...newGameState,

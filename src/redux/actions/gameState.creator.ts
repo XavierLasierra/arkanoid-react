@@ -6,6 +6,12 @@ export function canPlayState() {
   };
 }
 
+export function canEditState() {
+  return {
+    type: gameStateActions.START_EDIT,
+  };
+}
+
 export function selectBoard(board: number) {
   return {
     type: gameStateActions.SELECT_BOARD,

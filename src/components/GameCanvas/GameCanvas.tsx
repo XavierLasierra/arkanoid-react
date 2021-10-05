@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { gameBoardSize } from '../../constants/gameBoard.constants';
 import { IGameCanvasProps } from '../../types/interfaces';
 
-export default function GameCanvas({ gameMatrix, setGameMatrix }: IGameCanvasProps) {
+export default function GameCanvas({ gameMatrix, setGameMatrix, canEdit }: IGameCanvasProps) {
   const canvasRef = useRef(null);
 
   function renderGame(matrix: number[][]) {
@@ -40,7 +40,25 @@ export default function GameCanvas({ gameMatrix, setGameMatrix }: IGameCanvasPro
     renderGame(gameMatrix);
   }, [gameMatrix]);
 
+  function handleCanvasClick({ clientX, clientY, target }: any) {
+    if (!canEdit) return;
+
+    const positionX = Math.floor((clientX - target.getBoundingClientRect().left)
+    * (gameMatrix[0].length / gameBoardSize.width));
+    const positionY = Math.floor((clientY - target.getBoundingClientRect().top)
+    * (gameMatrix.length / gameBoardSize.height));
+
+    const aux = gameMatrix;
+    aux[positionY][positionX] = aux[positionY][positionX] === 0 ? 1 : 0;
+    setGameMatrix([...aux]);
+  }
+
   return (
-    <canvas ref={canvasRef} width={gameBoardSize.width} height={gameBoardSize.height} />
+    <canvas
+      onClick={handleCanvasClick}
+      ref={canvasRef}
+      width={gameBoardSize.width}
+      height={gameBoardSize.height}
+    />
   );
 }
