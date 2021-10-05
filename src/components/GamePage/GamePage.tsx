@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+
 import Ball from '../Ball/Ball';
 import Doh from '../Doh/Doh';
 import GameCanvas from '../GameCanvas/GameCanvas';
@@ -15,6 +17,7 @@ const gamePageStyles = {
 };
 
 export default function GamePage() {
+  const { canPlay } = useSelector((store:any) => store.gameState);
   const [dohCoordinateX, setDohCoordinateX] = useState(gameBoardSize.width / 2);
   const [gameMatrix, setGameMatrix] = useState(gameBoard1);
   const [dohMatrix, setDohMatrix] = useState(dohGameBoard);
@@ -48,7 +51,7 @@ export default function GamePage() {
   }
 
   function handleGameStart() {
-    if (!isGameActive) {
+    if (!isGameActive && canPlay) {
       setIsGameActive(true);
       const initialCoordinateX = Math.round(
         (dohCoordinateX * gameMatrix[0].length) / (gameBoardSize.width),

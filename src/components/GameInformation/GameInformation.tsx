@@ -1,8 +1,15 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { canPlayState } from '../../redux/actions/gameState.creator';
 
 import './gameInformation.styles.scss';
 
 export default function GameInformation() {
+  const dispatch = useDispatch();
+  function handleCanPlay() {
+    dispatch(canPlayState());
+  }
+
   return (
     <section className="game-information">
       <div className="web-title">
@@ -16,7 +23,7 @@ export default function GameInformation() {
         .
       </p>
       <div className="game-information__buttons">
-        <button className="button" type="button">START</button>
+        <button className="button" type="button" onClick={handleCanPlay}>START</button>
         <button className="button" type="button">EDIT</button>
       </div>
     </section>
