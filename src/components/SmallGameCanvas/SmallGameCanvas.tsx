@@ -52,9 +52,8 @@ export default function SmallGameCanvas({ board, currentBoard }: ISmallGameCanva
   }
 
   return (
-    <button type="button" onClick={handleBoardSelect}>
+    <button className="small-game-canvas" type="button" onClick={handleBoardSelect}>
       <canvas
-        className="small-game-canvas"
         ref={smallCanvasRef}
         width={canvasWidth}
         height={canvasHeight}

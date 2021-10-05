@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { canPlayState } from '../../redux/actions/gameState.creator';
+import { MAX_BOARDS } from '../../constants/gameBoard.constants';
+import { canPlayState, createBoard } from '../../redux/actions/gameState.creator';
 import EditingInformation from '../EditingInformation/EditingInformation';
 import PlayingInformation from '../PlayingInformation/PlayingInformation';
 import SmallGameCanvas from '../SmallGameCanvas/SmallGameCanvas';
@@ -11,8 +12,13 @@ export default function GameInformation() {
   const { canPlay, canEdit } = useSelector((store: any) => store.gameState);
   const boards = useSelector((store: any) => store.boards);
   const dispatch = useDispatch();
+
   function handleCanPlay() {
     dispatch(canPlayState());
+  }
+
+  function handleBoardCreation() {
+    dispatch(createBoard());
   }
 
   const userInteractive = canPlay
@@ -46,7 +52,7 @@ export default function GameInformation() {
                   currentBoard={index}
                 />
               ))}
-              <button className="add-button" type="button">+</button>
+              {boards.length < MAX_BOARDS && <button className="add-button" type="button" onClick={handleBoardCreation}>+</button>}
             </div>
           </section>
         )}

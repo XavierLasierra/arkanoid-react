@@ -12,3 +12,9 @@ export function selectBoard(board: number) {
     data: board,
   };
 }
+
+export function createBoard() {
+  return {
+    type: gameStateActions.CREATE_BOARD,
+  };
+}

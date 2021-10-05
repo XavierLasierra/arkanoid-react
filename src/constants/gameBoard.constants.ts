@@ -14,3 +14,5 @@ export const ballSize = {
 };
 
 export const dohGameBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+export const MAX_BOARDS = 6;
