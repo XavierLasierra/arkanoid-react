@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { canPlayState } from '../../redux/actions/gameState.creator';
 import EditingInformation from '../EditingInformation/EditingInformation';
 import PlayingInformation from '../PlayingInformation/PlayingInformation';
+import SmallGameCanvas from '../SmallGameCanvas/SmallGameCanvas';
 
 import './gameInformation.styles.scss';
 
 export default function GameInformation() {
   const { canPlay, canEdit } = useSelector((store: any) => store.gameState);
+  const boards = useSelector((store: any) => store.boards);
   const dispatch = useDispatch();
   function handleCanPlay() {
     dispatch(canPlayState());
@@ -36,6 +38,15 @@ export default function GameInformation() {
             <div className="game-information__buttons">
               <button className="button" type="button" onClick={handleCanPlay}>START</button>
               <button className="button" type="button">EDIT</button>
+            </div>
+            <div className="game-information__demos">
+              {boards.map((board: number[][], index: number) => (
+                <SmallGameCanvas
+                  board={board}
+                  currentBoard={index}
+                />
+              ))}
+              <button className="add-button" type="button">+</button>
             </div>
           </section>
         )}

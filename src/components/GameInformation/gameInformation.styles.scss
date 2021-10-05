@@ -10,6 +10,7 @@
     color: $main-color;
     font-family: $main-font;
     font-size: $normal-size;
+    margin-top: 3rem;
   }
 
   &__game-link {
@@ -26,6 +27,19 @@
     width: 100%;
     display: flex;
     justify-content: space-around;
+    margin-top: 3rem;
+  }
+
+  &__demos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+
+    & * {
+      margin: 0 5px;
+    }
   }
 }
 
@@ -45,4 +59,12 @@
 
 .button {
   @extend %button;
+}
+
+.add-button {
+  background-color: $main-color;
+  width: 3rem;
+  height: 3rem;
+  font-size: 2rem;
+  border: none;
 }

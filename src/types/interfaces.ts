@@ -18,3 +18,8 @@ export interface IBallProps {
     isGameActive: boolean,
     ballCoordinates: number[]
 }
+
+export interface ISmallGameCanvasProps {
+  board: number[][],
+  currentBoard: number
+}
