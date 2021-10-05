@@ -58,6 +58,10 @@
 
 .button {
   @extend %button;
+
+  &--wide {
+    width: 10rem;
+  }
 }
 
 .add-button {
