@@ -24,17 +24,16 @@ export default function GamePage() {
   const [moveTime, setMoveTime] = useState(100);
 
   function handleDohMatrixChange(coordinateX: number, matrix: number[]) {
-    let coordinate = Math.ceil((coordinateX * dohMatrix.length) / (gameBoardSize.width)) - 1;
-    if (coordinate === 0) coordinate = 1;
+    const coordinate = Math.ceil((coordinateX * dohMatrix.length) / (gameBoardSize.width)) - 1;
     return matrix.map((position, index) => ((index >= coordinate - 1 && index <= coordinate + 1)
       ? 1 : 0));
   }
 
   function handleDohPosition(clientX: number) {
-    if (clientX < dohSize.width / 2) {
-      return dohSize.width / 2;
-    } if (clientX > gameBoardSize.width - dohSize.width / 2) {
-      return gameBoardSize.width - dohSize.width / 2;
+    if (clientX < dohSize.width / 3) {
+      return dohSize.width / 3;
+    } if (clientX > gameBoardSize.width - dohSize.width / 3) {
+      return gameBoardSize.width - dohSize.width / 3;
     }
     return clientX;
   }
