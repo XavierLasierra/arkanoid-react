@@ -65,9 +65,39 @@
 }
 
 .add-button {
-  background-color: $main-color;
-  width: 3rem;
-  height: 3rem;
-  font-size: 2rem;
+  background-color: transparent;
+  color: $main-color;
+  font-size: 4rem;
+  font-family: $main-font;
+  height: 9rem;
+  width: 8rem;
   border: none;
+
+  &:hover {
+    font-size: 4.5rem;
+  }
+
+  &:active {
+    font-size: 4rem;
+  }
+}
+
+.demo {
+  position: relative;
+
+  &__delete {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: transparent;
+    color: $delete-color;
+    font-family: $main-font;
+    font-size: $big-size;
+    border: none;
+
+    &:hover {
+      color: $delete-hover-color;
+      text-shadow: 0 0 3px $delete-hover-color;
+    }
+  }
 }

@@ -44,3 +44,10 @@ export function saveBoardChanges(data: number[][], saveBoard: number) {
     saveBoard,
   };
 }
+
+export function deleteBoard(data: Number) {
+  return {
+    type: gameStateActions.DELETE_BOARD,
+    data,
+  };
+}

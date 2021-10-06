@@ -13,7 +13,7 @@ export default function GameCanvas({ gameMatrix, setGameMatrix, canEdit }: IGame
     const widthSize = gameBoardSize.width / gameMatrix[0].length;
     const heightSize = gameBoardSize.height / gameMatrix.length;
 
-    matrix.forEach((matrixRow, indexY) => {
+    matrix.forEach((matrixRow: number[], indexY) => {
       matrixRow.forEach((fillType: number, indexX) => {
         context.beginPath();
         context.fillStyle = fillType ? '#FFF' : '#000';
