@@ -117,7 +117,7 @@ export default function GamePage() {
     setBallDirection(nextBallDirection);
     const finalX = ballCoordinates[0] + nextBallDirection[0];
     const finalY = ballCoordinates[1] + nextBallDirection[1];
-    if (!gameMatrix[finalY][finalX]
+    if (gameMatrix[finalY]
       && gameMatrix[finalY][finalX] === 0
       && gameMatrix[ballCoordinates[1]][finalX] === 0
       && gameMatrix[finalY][ballCoordinates[0]] === 0) {
