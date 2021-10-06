@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 interface IDohSize {
     width: number,
     height: number,
@@ -10,7 +11,7 @@ export interface IDohProps {
 
 export interface IGameCanvasProps {
     gameMatrix: number[][],
-    setGameMatrix: any,
+    setGameMatrix: (arg: number[][]) => void,
     canEdit: boolean
 }
 
@@ -23,4 +24,8 @@ export interface IBallProps {
 export interface ISmallGameCanvasProps {
   board: number[][],
   currentBoard: number
+}
+
+export interface IScoreProps {
+  value: number
 }

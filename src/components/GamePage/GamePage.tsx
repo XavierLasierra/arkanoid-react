@@ -6,7 +6,7 @@ import Doh from '../Doh/Doh';
 import GameCanvas from '../GameCanvas/GameCanvas';
 
 import {
-  dohSize, gameBoardSize, dohGameBoard,
+  dohSize, gameBoardSize, dohGameBoard, BREAK_POINTS,
 } from '../../constants/gameBoard.constants';
 import { saveBoardChanges } from '../../redux/actions/gameState.creator';
 import Score from '../Score/Score';
@@ -31,6 +31,7 @@ export default function GamePage() {
   const [ballCoordinates, setBallCoordinates] = useState([0, 0]);
   const [ballDirection, setBallDirection] = useState([0, -1]);
   const [moveTime, setMoveTime] = useState(100);
+  const [score, setScore] = useState(0);
 
   useEffect(() => {
     setGameMatrix(JSON.parse(JSON.stringify(boards[currentBoard])));
@@ -109,14 +110,17 @@ export default function GamePage() {
       nextBallDirection = [ballDirection[0], -ballDirection[1]];
       gameMatrix[nextYCoordinate][ballCoordinates[0]] = 0;
       setGameMatrix([...gameMatrix]);
+      setScore(score + BREAK_POINTS);
     } else if (gameMatrix[ballCoordinates[1]][nextXCoordinate] === 1) {
       nextBallDirection = [-ballDirection[0], ballDirection[1]];
       gameMatrix[ballCoordinates[1]][nextXCoordinate] = 0;
       setGameMatrix([...gameMatrix]);
+      setScore(score + BREAK_POINTS);
     } else if (gameMatrix[nextYCoordinate][nextXCoordinate] === 1) {
       nextBallDirection = [-ballDirection[0], -ballDirection[1]];
       gameMatrix[nextYCoordinate][nextXCoordinate] = 0;
       setGameMatrix([...gameMatrix]);
+      setScore(score + BREAK_POINTS);
     }
     setBallDirection(nextBallDirection);
     const finalX = ballCoordinates[0] + nextBallDirection[0];
@@ -148,7 +152,7 @@ export default function GamePage() {
       role="button"
       tabIndex={0}
     >
-      <Score />
+      <Score value={score} />
       <GameCanvas gameMatrix={gameMatrix} setGameMatrix={setGameMatrix} canEdit={canEdit} />
       {canPlay && (
       <Ball
