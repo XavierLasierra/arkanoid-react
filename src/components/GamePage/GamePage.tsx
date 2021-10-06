@@ -32,6 +32,7 @@ export default function GamePage() {
   const [ballDirection, setBallDirection] = useState([0, -1]);
   const [moveTime, setMoveTime] = useState(100);
   const [score, setScore] = useState(0);
+  const [multiplier, setMultiplier] = useState(1);
 
   useEffect(() => {
     setGameMatrix(JSON.parse(JSON.stringify(boards[currentBoard])));
@@ -101,6 +102,7 @@ export default function GamePage() {
         } else {
           nextBallDirection = [0, -ballDirection[1]];
         }
+        setMultiplier(1);
       } else {
         return handleDeath();
       }
@@ -110,17 +112,20 @@ export default function GamePage() {
       nextBallDirection = [ballDirection[0], -ballDirection[1]];
       gameMatrix[nextYCoordinate][ballCoordinates[0]] = 0;
       setGameMatrix([...gameMatrix]);
-      setScore(score + BREAK_POINTS);
+      setScore((score + BREAK_POINTS) * multiplier);
+      setMultiplier(multiplier + 1);
     } else if (gameMatrix[ballCoordinates[1]][nextXCoordinate] === 1) {
       nextBallDirection = [-ballDirection[0], ballDirection[1]];
       gameMatrix[ballCoordinates[1]][nextXCoordinate] = 0;
       setGameMatrix([...gameMatrix]);
-      setScore(score + BREAK_POINTS);
+      setScore((score + BREAK_POINTS) * multiplier);
+      setMultiplier(multiplier + 1);
     } else if (gameMatrix[nextYCoordinate][nextXCoordinate] === 1) {
       nextBallDirection = [-ballDirection[0], -ballDirection[1]];
       gameMatrix[nextYCoordinate][nextXCoordinate] = 0;
       setGameMatrix([...gameMatrix]);
-      setScore(score + BREAK_POINTS);
+      setScore((score + BREAK_POINTS) * multiplier);
+      setMultiplier(multiplier + 1);
     }
     setBallDirection(nextBallDirection);
     const finalX = ballCoordinates[0] + nextBallDirection[0];
