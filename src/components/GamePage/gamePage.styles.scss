@@ -1,0 +1,8 @@
+@import "../../styles/variables";
+
+.game-container {
+  height: 100vh;
+  background-color: $background-color;
+  border: 5px solid $main-color;
+  position: relative;
+}

@@ -9,12 +9,12 @@ import {
   dohSize, gameBoardSize, dohGameBoard,
 } from '../../constants/gameBoard.constants';
 import { saveBoardChanges } from '../../redux/actions/gameState.creator';
+import Score from '../Score/Score';
+
+import './gamePage.styles.scss';
 
 const gamePageStyles = {
   width: `${gameBoardSize.width + 10}px`,
-  height: '100vh',
-  backgroundColor: '#000',
-  border: '5px solid #FFF',
 };
 
 export default function GamePage() {
@@ -80,6 +80,11 @@ export default function GamePage() {
     }
   }
 
+  function handleDeath() {
+    setBallDirection([0, -1]);
+    return setIsGameActive(false);
+  }
+
   function nextTurn() {
     const nextXCoordinate = ballCoordinates[0] + ballDirection[0];
     const nextYCoordinate = ballCoordinates[1] + ballDirection[1];
@@ -96,8 +101,7 @@ export default function GamePage() {
           nextBallDirection = [0, -ballDirection[1]];
         }
       } else {
-        setBallDirection([0, -1]);
-        return setIsGameActive(false);
+        return handleDeath();
       }
     } else if (gameMatrix[ballCoordinates[1]][nextXCoordinate] === undefined) {
       nextBallDirection = [-nextBallDirection[0], nextBallDirection[1]];
@@ -136,6 +140,7 @@ export default function GamePage() {
 
   return (
     <section
+      className="game-container"
       style={gamePageStyles}
       onMouseMove={handleMouseMove}
       onClick={handleGameStart}
@@ -143,6 +148,7 @@ export default function GamePage() {
       role="button"
       tabIndex={0}
     >
+      <Score />
       <GameCanvas gameMatrix={gameMatrix} setGameMatrix={setGameMatrix} canEdit={canEdit} />
       {canPlay && (
       <Ball
