@@ -1,6 +1,6 @@
 # Arkanoid React App
 
-This fullstack project is a library organizer app.
+This React App is a simple version of the arcade game Arkanoid.
 
 ## Deploy
 
