@@ -19,8 +19,8 @@ export default function EditingInformation() {
     <section className="edit-information">
       <p className="edit-information__description">Click on the screen to add or delete a block</p>
       <div className="edit-information__buttons">
-        <button className="button button--wide" type="button" onClick={handleSave}>SAVE</button>
-        <button className="button button--wide" type="button" onClick={handleDiscard}>DISCARD</button>
+        <button className="button button--wide" type="button" onClick={handleSave} aria-label="Save edit">SAVE</button>
+        <button className="button button--wide" type="button" onClick={handleDiscard} aria-label="Discard edit">DISCARD</button>
       </div>
     </section>
   );

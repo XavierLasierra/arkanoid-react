@@ -52,8 +52,8 @@ export default function GameInformation() {
               .
             </p>
             <div className="game-information__buttons">
-              <button className="button" type="button" onClick={handleCanPlay}>START</button>
-              <button className="button" type="button" onClick={handleCanEdit}>EDIT</button>
+              <button className="button" type="button" onClick={handleCanPlay} aria-label="Start Game">START</button>
+              <button className="button" type="button" onClick={handleCanEdit} aria-label="Edit Gameboard">EDIT</button>
             </div>
             <div className="game-information__demos">
               {boards.map((board: number[][], index: number) => (
