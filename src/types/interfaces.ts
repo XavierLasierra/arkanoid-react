@@ -34,3 +34,7 @@ export interface IParticlesProps {
   particlesCoordinates: any,
   setParticlesCoordinates: any,
 }
+
+export interface ILivesProps {
+  lives: number;
+}

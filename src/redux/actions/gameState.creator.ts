@@ -51,3 +51,9 @@ export function deleteBoard(data: Number) {
     data,
   };
 }
+
+export function endGame() {
+  return {
+    type: gameStateActions.END_GAME,
+  };
+}

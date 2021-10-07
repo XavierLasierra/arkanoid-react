@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import Ball from '../Ball/Ball';
 import Doh from '../Doh/Doh';
 import GameCanvas from '../GameCanvas/GameCanvas';
+import Score from '../Score/Score';
+import Lives from '../Lives/Lives';
 
 import {
-  dohSize, gameBoardSize, dohGameBoard, BREAK_POINTS,
+  dohSize, gameBoardSize, dohGameBoard, BREAK_POINTS, LIVES,
 } from '../../constants/gameBoard.constants';
-import { saveBoardChanges } from '../../redux/actions/gameState.creator';
-import Score from '../Score/Score';
+import { endGame, saveBoardChanges } from '../../redux/actions/gameState.creator';
 
 import './gamePage.styles.scss';
 import Particles from '../Particles/Particles';
@@ -35,6 +36,7 @@ export default function GamePage() {
   const [score, setScore] = useState(0);
   const [multiplier, setMultiplier] = useState(1);
   const [particleCoordinates, setParticleCoordinates] = useState<any>([]);
+  const [lives, setLives] = useState(LIVES);
 
   useEffect(() => {
     setGameMatrix(JSON.parse(JSON.stringify(boards[currentBoard])));
@@ -84,8 +86,17 @@ export default function GamePage() {
     }
   }
 
+  function handleEndGame() {
+    dispatch(endGame());
+  }
+
   function handleDeath() {
     setBallDirection([0, -1]);
+    setMultiplier(1);
+    if (lives === 0) {
+      return handleEndGame();
+    }
+    setLives(lives - 1);
     return setIsGameActive(false);
   }
 
@@ -175,6 +186,7 @@ export default function GamePage() {
         particlesCoordinates={particleCoordinates}
         setParticlesCoordinates={setParticleCoordinates}
       />
+      <Lives lives={lives} />
       <Score value={score} />
       <GameCanvas gameMatrix={gameMatrix} setGameMatrix={setGameMatrix} canEdit={canEdit} />
       {canPlay && (
