@@ -112,20 +112,20 @@ export default function GamePage() {
       nextBallDirection = [ballDirection[0], -ballDirection[1]];
       gameMatrix[nextYCoordinate][ballCoordinates[0]] = 0;
       setGameMatrix([...gameMatrix]);
-      setScore((score + BREAK_POINTS) * multiplier);
-      setMultiplier(multiplier + 1);
+      setScore(score + BREAK_POINTS * multiplier);
+      setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
     } else if (gameMatrix[ballCoordinates[1]][nextXCoordinate] === 1) {
       nextBallDirection = [-ballDirection[0], ballDirection[1]];
       gameMatrix[ballCoordinates[1]][nextXCoordinate] = 0;
       setGameMatrix([...gameMatrix]);
-      setScore((score + BREAK_POINTS) * multiplier);
-      setMultiplier(multiplier + 1);
+      setScore(score + BREAK_POINTS * multiplier);
+      setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
     } else if (gameMatrix[nextYCoordinate][nextXCoordinate] === 1) {
       nextBallDirection = [-ballDirection[0], -ballDirection[1]];
       gameMatrix[nextYCoordinate][nextXCoordinate] = 0;
       setGameMatrix([...gameMatrix]);
-      setScore((score + BREAK_POINTS) * multiplier);
-      setMultiplier(multiplier + 1);
+      setScore(score + BREAK_POINTS * multiplier);
+      setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
     }
     setBallDirection(nextBallDirection);
     const finalX = ballCoordinates[0] + nextBallDirection[0];
