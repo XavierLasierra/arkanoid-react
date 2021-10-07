@@ -57,10 +57,12 @@ export default function GameInformation() {
             </div>
             <div className="game-information__demos">
               {boards.map((board: number[][], index: number) => (
-                <div className="demo">
-                  <SmallGameCanvas
+                <div
                   // eslint-disable-next-line react/no-array-index-key
-                    key={`board-${index}`}
+                  key={`board-${index}`}
+                  className="demo"
+                >
+                  <SmallGameCanvas
                     board={board}
                     currentBoard={index}
                   />

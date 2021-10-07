@@ -1,0 +1,17 @@
+@import "../../styles/variables";
+
+.particle {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+
+  &__small {
+    background-color: $main-color;
+    width: 7px;
+    height: 7px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    transition: transform 0.2s ease-in-out;
+  }
+}
