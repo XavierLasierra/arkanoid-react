@@ -12,6 +12,7 @@ import { saveBoardChanges } from '../../redux/actions/gameState.creator';
 import Score from '../Score/Score';
 
 import './gamePage.styles.scss';
+import Particles from '../Particles/Particles';
 
 const gamePageStyles = {
   width: `${gameBoardSize.width + 10}px`,
@@ -33,6 +34,7 @@ export default function GamePage() {
   const [moveTime, setMoveTime] = useState(100);
   const [score, setScore] = useState(0);
   const [multiplier, setMultiplier] = useState(1);
+  const [particleCoordinates, setParticleCoordinates] = useState<any>([]);
 
   useEffect(() => {
     setGameMatrix(JSON.parse(JSON.stringify(boards[currentBoard])));
@@ -113,18 +115,30 @@ export default function GamePage() {
       gameMatrix[nextYCoordinate][ballCoordinates[0]] = 0;
       setGameMatrix([...gameMatrix]);
       setScore(score + BREAK_POINTS * multiplier);
+      setParticleCoordinates([{
+        coordX: ballCoordinates[0] * (gameBoardSize.width / gameMatrix[0].length),
+        coordY: nextYCoordinate * (gameBoardSize.height / gameMatrix.length),
+      }]);
       setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
     } else if (gameMatrix[ballCoordinates[1]][nextXCoordinate] === 1) {
       nextBallDirection = [-ballDirection[0], ballDirection[1]];
       gameMatrix[ballCoordinates[1]][nextXCoordinate] = 0;
       setGameMatrix([...gameMatrix]);
       setScore(score + BREAK_POINTS * multiplier);
+      setParticleCoordinates([{
+        coordX: nextXCoordinate * (gameBoardSize.width / gameMatrix[0].length),
+        coordY: ballCoordinates[1] * (gameBoardSize.height / gameMatrix.length),
+      }]);
       setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
     } else if (gameMatrix[nextYCoordinate][nextXCoordinate] === 1) {
       nextBallDirection = [-ballDirection[0], -ballDirection[1]];
       gameMatrix[nextYCoordinate][nextXCoordinate] = 0;
       setGameMatrix([...gameMatrix]);
       setScore(score + BREAK_POINTS * multiplier);
+      setParticleCoordinates([{
+        coordX: nextXCoordinate * (gameBoardSize.width / gameMatrix[0].length),
+        coordY: nextYCoordinate * (gameBoardSize.height / gameMatrix.length),
+      }]);
       setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
     }
     setBallDirection(nextBallDirection);
@@ -157,6 +171,10 @@ export default function GamePage() {
       role="button"
       tabIndex={0}
     >
+      <Particles
+        particlesCoordinates={particleCoordinates}
+        setParticlesCoordinates={setParticleCoordinates}
+      />
       <Score value={score} />
       <GameCanvas gameMatrix={gameMatrix} setGameMatrix={setGameMatrix} canEdit={canEdit} />
       {canPlay && (

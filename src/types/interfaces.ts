@@ -29,3 +29,8 @@ export interface ISmallGameCanvasProps {
 export interface IScoreProps {
   value: number
 }
+
+export interface IParticlesProps {
+  particlesCoordinates: any,
+  setParticlesCoordinates: any,
+}
