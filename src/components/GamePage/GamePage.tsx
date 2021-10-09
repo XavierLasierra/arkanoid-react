@@ -22,26 +22,38 @@ const gamePageStyles = {
 
 export default function GamePage() {
   const dispatch = useDispatch();
+
   const gameState = useSelector((store:any) => store.gameState);
   const {
     currentBoard, canPlay, canEdit, save,
   } = gameState;
   const boards = useSelector((store: any) => store.boards);
-  const [dohCoordinateX, setDohCoordinateX] = useState(gameBoardSize.width / 2);
+
   const [gameMatrix, setGameMatrix] = useState([[0]]);
   const [dohMatrix, setDohMatrix] = useState(dohGameBoard);
-  const [isGameActive, setIsGameActive] = useState(false);
+  const [dohCoordinateX, setDohCoordinateX] = useState(gameBoardSize.width / 2);
+  const [particleCoordinates, setParticleCoordinates] = useState<any>([]);
+
   const [ballCoordinates, setBallCoordinates] = useState([0, 0]);
   const [ballDirection, setBallDirection] = useState([0, -1]);
+
+  const [isGameActive, setIsGameActive] = useState(false);
   const [moveTime, setMoveTime] = useState(100);
+
+  const [numberOfBlocks, setNumberOfBlocks] = useState(0);
   const [score, setScore] = useState(0);
   const [multiplier, setMultiplier] = useState(1);
-  const [particleCoordinates, setParticleCoordinates] = useState<any>([]);
   const [lives, setLives] = useState(LIVES);
+
+  function calculateNumberOfBlocks(matrix: number[][]) {
+    return matrix.reduce((acc, row) => acc + row.filter((value) => value === 1).length, 0);
+  }
 
   useEffect(() => {
     setGameMatrix(JSON.parse(JSON.stringify(boards[currentBoard])));
+    setNumberOfBlocks(calculateNumberOfBlocks(boards[currentBoard]));
     setBallCoordinates([0, boards[currentBoard].length - 1]);
+    setScore(0);
   }, [gameState]);
 
   useEffect(() => {
@@ -105,6 +117,21 @@ export default function GamePage() {
     return setIsGameActive(false);
   }
 
+  function blockBreak(coordX: number, coordY: number) {
+    gameMatrix[coordY][coordX] = 0;
+    setGameMatrix([...gameMatrix]);
+    setScore(score + BREAK_POINTS * multiplier);
+    setParticleCoordinates([{
+      coordX: coordX * (gameBoardSize.width / gameMatrix[0].length),
+      coordY: coordY * (gameBoardSize.height / gameMatrix.length),
+    }]);
+    setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
+    if (numberOfBlocks === 1) {
+      return handleEndGame();
+    }
+    return setNumberOfBlocks(numberOfBlocks - 1);
+  }
+
   function nextTurn() {
     const nextXCoordinate = ballCoordinates[0] + ballDirection[0];
     const nextYCoordinate = ballCoordinates[1] + ballDirection[1];
@@ -128,36 +155,16 @@ export default function GamePage() {
       nextBallDirection = [-nextBallDirection[0], nextBallDirection[1]];
     } else if (gameMatrix[nextYCoordinate][ballCoordinates[0]] === 1) {
       nextBallDirection = [ballDirection[0], -ballDirection[1]];
-      gameMatrix[nextYCoordinate][ballCoordinates[0]] = 0;
-      setGameMatrix([...gameMatrix]);
-      setScore(score + BREAK_POINTS * multiplier);
-      setParticleCoordinates([{
-        coordX: ballCoordinates[0] * (gameBoardSize.width / gameMatrix[0].length),
-        coordY: nextYCoordinate * (gameBoardSize.height / gameMatrix.length),
-      }]);
-      setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
+      blockBreak(ballCoordinates[0], nextYCoordinate);
     } else if (gameMatrix[ballCoordinates[1]][nextXCoordinate] === 1) {
       nextBallDirection = [-ballDirection[0], ballDirection[1]];
-      gameMatrix[ballCoordinates[1]][nextXCoordinate] = 0;
-      setGameMatrix([...gameMatrix]);
-      setScore(score + BREAK_POINTS * multiplier);
-      setParticleCoordinates([{
-        coordX: nextXCoordinate * (gameBoardSize.width / gameMatrix[0].length),
-        coordY: ballCoordinates[1] * (gameBoardSize.height / gameMatrix.length),
-      }]);
-      setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
+      blockBreak(nextXCoordinate, ballCoordinates[1]);
     } else if (gameMatrix[nextYCoordinate][nextXCoordinate] === 1) {
       nextBallDirection = [-ballDirection[0], -ballDirection[1]];
-      gameMatrix[nextYCoordinate][nextXCoordinate] = 0;
-      setGameMatrix([...gameMatrix]);
-      setScore(score + BREAK_POINTS * multiplier);
-      setParticleCoordinates([{
-        coordX: nextXCoordinate * (gameBoardSize.width / gameMatrix[0].length),
-        coordY: nextYCoordinate * (gameBoardSize.height / gameMatrix.length),
-      }]);
-      setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
+      blockBreak(nextXCoordinate, nextYCoordinate);
     }
     setBallDirection(nextBallDirection);
+
     const finalX = ballCoordinates[0] + nextBallDirection[0];
     const finalY = ballCoordinates[1] + nextBallDirection[1];
     if (gameMatrix[finalY]
