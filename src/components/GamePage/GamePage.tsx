@@ -4,15 +4,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import Ball from '../Ball/Ball';
 import Doh from '../Doh/Doh';
 import GameCanvas from '../GameCanvas/GameCanvas';
+import Score from '../Score/Score';
+import Lives from '../Lives/Lives';
 
 import {
-  dohSize, gameBoardSize, dohGameBoard, BREAK_POINTS,
+  dohSize, gameBoardSize, dohGameBoard, BREAK_POINTS, LIVES,
 } from '../../constants/gameBoard.constants';
-import { saveBoardChanges } from '../../redux/actions/gameState.creator';
-import Score from '../Score/Score';
+import { endGame, saveBoardChanges } from '../../redux/actions/gameState.creator';
 
 import './gamePage.styles.scss';
 import Particles from '../Particles/Particles';
+import Death from '../Death/Death';
 
 const gamePageStyles = {
   width: `${gameBoardSize.width + 10}px`,
@@ -20,25 +22,44 @@ const gamePageStyles = {
 
 export default function GamePage() {
   const dispatch = useDispatch();
+
   const gameState = useSelector((store:any) => store.gameState);
   const {
     currentBoard, canPlay, canEdit, save,
   } = gameState;
   const boards = useSelector((store: any) => store.boards);
-  const [dohCoordinateX, setDohCoordinateX] = useState(gameBoardSize.width / 2);
+
   const [gameMatrix, setGameMatrix] = useState([[0]]);
   const [dohMatrix, setDohMatrix] = useState(dohGameBoard);
-  const [isGameActive, setIsGameActive] = useState(false);
+  const [dohCoordinateX, setDohCoordinateX] = useState(gameBoardSize.width / 2);
+  const [particleCoordinates, setParticleCoordinates] = useState<any>([]);
+
   const [ballCoordinates, setBallCoordinates] = useState([0, 0]);
   const [ballDirection, setBallDirection] = useState([0, -1]);
+
+  const [isGameActive, setIsGameActive] = useState(false);
   const [moveTime, setMoveTime] = useState(100);
+
+  const [numberOfBlocks, setNumberOfBlocks] = useState(0);
   const [score, setScore] = useState(0);
   const [multiplier, setMultiplier] = useState(1);
-  const [particleCoordinates, setParticleCoordinates] = useState<any>([]);
+  const [lives, setLives] = useState(LIVES);
+
+  function calculateNumberOfBlocks(matrix: number[][]) {
+    return matrix.reduce((acc, row) => acc + row.filter((value) => value === 1).length, 0);
+  }
 
   useEffect(() => {
     setGameMatrix(JSON.parse(JSON.stringify(boards[currentBoard])));
+    setNumberOfBlocks(calculateNumberOfBlocks(boards[currentBoard]));
+
     setBallCoordinates([0, boards[currentBoard].length - 1]);
+    setBallDirection([0, -1]);
+
+    setMultiplier(1);
+    setLives(3);
+
+    setIsGameActive(false);
   }, [gameState]);
 
   useEffect(() => {
@@ -75,6 +96,10 @@ export default function GamePage() {
 
   function handleGameStart() {
     if (!isGameActive && canPlay) {
+      if (lives === 3) {
+        setScore(0);
+      }
+
       setIsGameActive(true);
       const initialCoordinateX = Math.ceil(
         (dohCoordinateX * gameMatrix[0].length) / (gameBoardSize.width),
@@ -84,9 +109,33 @@ export default function GamePage() {
     }
   }
 
+  function handleEndGame() {
+    dispatch(endGame());
+  }
+
   function handleDeath() {
     setBallDirection([0, -1]);
+    setMultiplier(1);
+    if (lives === 0) {
+      return handleEndGame();
+    }
+    setLives(lives - 1);
     return setIsGameActive(false);
+  }
+
+  function blockBreak(coordX: number, coordY: number) {
+    gameMatrix[coordY][coordX] = 0;
+    setGameMatrix([...gameMatrix]);
+    setScore(score + BREAK_POINTS * multiplier);
+    setParticleCoordinates([{
+      coordX: coordX * (gameBoardSize.width / gameMatrix[0].length),
+      coordY: coordY * (gameBoardSize.height / gameMatrix.length),
+    }]);
+    setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
+    if (numberOfBlocks === 1) {
+      return handleEndGame();
+    }
+    return setNumberOfBlocks(numberOfBlocks - 1);
   }
 
   function nextTurn() {
@@ -112,36 +161,16 @@ export default function GamePage() {
       nextBallDirection = [-nextBallDirection[0], nextBallDirection[1]];
     } else if (gameMatrix[nextYCoordinate][ballCoordinates[0]] === 1) {
       nextBallDirection = [ballDirection[0], -ballDirection[1]];
-      gameMatrix[nextYCoordinate][ballCoordinates[0]] = 0;
-      setGameMatrix([...gameMatrix]);
-      setScore(score + BREAK_POINTS * multiplier);
-      setParticleCoordinates([{
-        coordX: ballCoordinates[0] * (gameBoardSize.width / gameMatrix[0].length),
-        coordY: nextYCoordinate * (gameBoardSize.height / gameMatrix.length),
-      }]);
-      setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
+      blockBreak(ballCoordinates[0], nextYCoordinate);
     } else if (gameMatrix[ballCoordinates[1]][nextXCoordinate] === 1) {
       nextBallDirection = [-ballDirection[0], ballDirection[1]];
-      gameMatrix[ballCoordinates[1]][nextXCoordinate] = 0;
-      setGameMatrix([...gameMatrix]);
-      setScore(score + BREAK_POINTS * multiplier);
-      setParticleCoordinates([{
-        coordX: nextXCoordinate * (gameBoardSize.width / gameMatrix[0].length),
-        coordY: ballCoordinates[1] * (gameBoardSize.height / gameMatrix.length),
-      }]);
-      setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
+      blockBreak(nextXCoordinate, ballCoordinates[1]);
     } else if (gameMatrix[nextYCoordinate][nextXCoordinate] === 1) {
       nextBallDirection = [-ballDirection[0], -ballDirection[1]];
-      gameMatrix[nextYCoordinate][nextXCoordinate] = 0;
-      setGameMatrix([...gameMatrix]);
-      setScore(score + BREAK_POINTS * multiplier);
-      setParticleCoordinates([{
-        coordX: nextXCoordinate * (gameBoardSize.width / gameMatrix[0].length),
-        coordY: nextYCoordinate * (gameBoardSize.height / gameMatrix.length),
-      }]);
-      setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
+      blockBreak(nextXCoordinate, nextYCoordinate);
     }
     setBallDirection(nextBallDirection);
+
     const finalX = ballCoordinates[0] + nextBallDirection[0];
     const finalY = ballCoordinates[1] + nextBallDirection[1];
     if (gameMatrix[finalY]
@@ -175,6 +204,8 @@ export default function GamePage() {
         particlesCoordinates={particleCoordinates}
         setParticlesCoordinates={setParticleCoordinates}
       />
+      <Lives lives={lives} />
+      {!canEdit && <Death lives={lives} canPlay={canPlay} />}
       <Score value={score} />
       <GameCanvas gameMatrix={gameMatrix} setGameMatrix={setGameMatrix} canEdit={canEdit} />
       {canPlay && (

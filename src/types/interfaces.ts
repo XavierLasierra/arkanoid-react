@@ -34,3 +34,12 @@ export interface IParticlesProps {
   particlesCoordinates: any,
   setParticlesCoordinates: any,
 }
+
+export interface ILivesProps {
+  lives: number
+}
+
+export interface IDeathProps {
+  lives: number,
+  canPlay: boolean
+}

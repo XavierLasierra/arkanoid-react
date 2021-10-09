@@ -20,6 +20,7 @@ export default function gameStateReducer(gameState = initialState, action: any) 
       break;
     case gameStateActions.SAVE_EDIT:
     case gameStateActions.DISCARD_EDIT:
+    case gameStateActions.END_GAME:
       newGameState = {
         ...newGameState,
         canPlay: false,
