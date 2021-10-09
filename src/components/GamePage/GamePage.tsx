@@ -52,8 +52,14 @@ export default function GamePage() {
   useEffect(() => {
     setGameMatrix(JSON.parse(JSON.stringify(boards[currentBoard])));
     setNumberOfBlocks(calculateNumberOfBlocks(boards[currentBoard]));
+
     setBallCoordinates([0, boards[currentBoard].length - 1]);
-    setScore(0);
+    setBallDirection([0, -1]);
+
+    setMultiplier(1);
+    setLives(3);
+
+    setIsGameActive(false);
   }, [gameState]);
 
   useEffect(() => {
@@ -90,6 +96,10 @@ export default function GamePage() {
 
   function handleGameStart() {
     if (!isGameActive && canPlay) {
+      if (lives === 3) {
+        setScore(0);
+      }
+
       setIsGameActive(true);
       const initialCoordinateX = Math.ceil(
         (dohCoordinateX * gameMatrix[0].length) / (gameBoardSize.width),
@@ -101,10 +111,6 @@ export default function GamePage() {
 
   function handleEndGame() {
     dispatch(endGame());
-    setIsGameActive(false);
-    setMultiplier(1);
-    setBallDirection([0, -1]);
-    setLives(3);
   }
 
   function handleDeath() {
@@ -199,7 +205,7 @@ export default function GamePage() {
         setParticlesCoordinates={setParticleCoordinates}
       />
       <Lives lives={lives} />
-      <Death lives={lives} canPlay={canPlay} />
+      {!canEdit && <Death lives={lives} canPlay={canPlay} />}
       <Score value={score} />
       <GameCanvas gameMatrix={gameMatrix} setGameMatrix={setGameMatrix} canEdit={canEdit} />
       {canPlay && (
