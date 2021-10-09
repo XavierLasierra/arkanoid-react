@@ -14,6 +14,7 @@ import { endGame, saveBoardChanges } from '../../redux/actions/gameState.creator
 
 import './gamePage.styles.scss';
 import Particles from '../Particles/Particles';
+import Death from '../Death/Death';
 
 const gamePageStyles = {
   width: `${gameBoardSize.width + 10}px`,
@@ -88,6 +89,10 @@ export default function GamePage() {
 
   function handleEndGame() {
     dispatch(endGame());
+    setIsGameActive(false);
+    setMultiplier(1);
+    setBallDirection([0, -1]);
+    setLives(3);
   }
 
   function handleDeath() {
@@ -187,6 +192,7 @@ export default function GamePage() {
         setParticlesCoordinates={setParticleCoordinates}
       />
       <Lives lives={lives} />
+      <Death lives={lives} canPlay={canPlay} />
       <Score value={score} />
       <GameCanvas gameMatrix={gameMatrix} setGameMatrix={setGameMatrix} canEdit={canEdit} />
       {canPlay && (

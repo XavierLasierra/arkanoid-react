@@ -36,5 +36,10 @@ export interface IParticlesProps {
 }
 
 export interface ILivesProps {
-  lives: number;
+  lives: number
+}
+
+export interface IDeathProps {
+  lives: number,
+  canPlay: boolean
 }
