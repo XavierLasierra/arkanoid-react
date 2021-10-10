@@ -10,6 +10,7 @@ https://arkanoid-xav.vercel.app
 ## You can find in the app:
 
 - Redux to handle the local state
+- React Hooks
 - Typescript
 - SOLID
 - DRY
