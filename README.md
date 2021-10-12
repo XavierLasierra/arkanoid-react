@@ -15,6 +15,7 @@ https://arkanoid-xav.vercel.app
 - SOLID
 - DRY
 - ESLint
+- SonarQube
 
 ## To run the application
 
