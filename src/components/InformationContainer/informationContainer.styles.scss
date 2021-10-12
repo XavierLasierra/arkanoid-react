@@ -1,45 +1,8 @@
-@import "../../styles/variables", "../../styles/extends";
+@import "../../styles/variables";
 
 .information-container {
   width: 600px;
   padding: 3rem 0;
-}
-
-.game-information {
-  margin-top: 3rem;
-
-  &__description {
-    @extend %text;
-  }
-
-  &__game-link {
-    text-decoration: none;
-    color: $main-color;
-    font-weight: bold;
-
-    &:hover {
-      color: $detail-color;
-    }
-  }
-
-  &__buttons {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    margin-top: 3rem;
-  }
-
-  &__demos {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 3rem;
-
-    & * {
-      margin: 5px;
-    }
-  }
 }
 
 .creator-information {
@@ -66,49 +29,5 @@
     width: 2.5rem;
     height: 2.5rem;
     margin: 0.5rem;
-  }
-}
-
-.button {
-  @extend %button;
-
-  &--wide {
-    width: 10rem;
-  }
-}
-
-.add-button {
-  background-color: transparent;
-  color: $main-color;
-  font-size: 4rem;
-  height: 9rem;
-  width: 8rem;
-  border: none;
-
-  &:hover {
-    font-size: 4.5rem;
-  }
-
-  &:active {
-    font-size: 4rem;
-  }
-}
-
-.demo {
-  position: relative;
-
-  &__delete {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    background-color: transparent;
-    color: $delete-color;
-    font-size: $big-size;
-    border: none;
-
-    &:hover {
-      color: $delete-hover-color;
-      text-shadow: 0 0 3px $delete-hover-color;
-    }
   }
 }
