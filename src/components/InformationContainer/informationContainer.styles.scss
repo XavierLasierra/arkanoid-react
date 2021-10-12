@@ -52,13 +52,11 @@
 .web-title {
   &__main-title {
     color: $main-color;
-    font-family: $main-font;
     font-size: $title-size;
     font-weight: bold;
   }
   &__subtitle {
     color: $main-color;
-    font-family: $main-font;
     font-size: $big-size;
   }
 }
@@ -83,7 +81,6 @@
   background-color: transparent;
   color: $main-color;
   font-size: 4rem;
-  font-family: $main-font;
   height: 9rem;
   width: 8rem;
   border: none;
@@ -106,7 +103,6 @@
     right: 10px;
     background-color: transparent;
     color: $delete-color;
-    font-family: $main-font;
     font-size: $big-size;
     border: none;
 
