@@ -1,3 +1,8 @@
+@import "../../styles/variables";
+
 .doh {
   pointer-events: none;
+  background-color: $main-color;
+  box-shadow: 0 0 10px $main-color;
+  border-radius: 20px;
 }
