@@ -19,3 +19,7 @@ export const MAX_BOARDS = 6;
 export const BREAK_POINTS = 5;
 export const LIVES = 3;
 export const DEATH_ANIMATION_TIME = 100;
+
+export const BACKGROUND_COLOR = "#000";
+export const MAIN_COLOR = "#FFF";
+export const STROKE_SIZE = 6;
