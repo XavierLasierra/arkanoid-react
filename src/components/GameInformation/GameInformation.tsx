@@ -1,13 +1,17 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { MAX_BOARDS } from '../../constants/gameBoard.constants';
-import {
-  canEditState, canPlayState, createBoard, deleteBoard,
-} from '../../redux/actions/gameState.creator';
+
 import EditingInformation from '../EditingInformation/EditingInformation';
 import PlayingInformation from '../PlayingInformation/PlayingInformation';
 import SmallGameCanvas from '../SmallGameCanvas/SmallGameCanvas';
 
+import {
+  canEditState, canPlayState, createBoard, deleteBoard,
+} from '../../redux/actions/gameState.creator';
+import { MAX_BOARDS } from '../../constants/gameBoard.constants';
+
+import GithubLogo from '../../assets/github.svg';
+import LinkedinLogo from '../../assets/linkedin.svg';
 import './gameInformation.styles.scss';
 
 export default function GameInformation() {
@@ -37,9 +41,19 @@ export default function GameInformation() {
 
   return (
     <div className="information-container">
-      <div className="web-title">
-        <h1 className="web-title__main-title">Arkanoid</h1>
-        <h2 className="web-title__subtitle">by Xavier Lasierra</h2>
+      <div className="creator-information">
+        <div className="web-title">
+          <h1 className="web-title__main-title">Arkanoid</h1>
+          <h2 className="web-title__subtitle">by Xavier Lasierra</h2>
+        </div>
+        <div className="social-networks">
+          <a href="https://github.com/XavierLasierra">
+            <img className="social-networks__icon" src={GithubLogo} alt="Github" />
+          </a>
+          <a href="https://www.linkedin.com/in/xavierlasierra/">
+            <img className="social-networks__icon" src={LinkedinLogo} alt="Linkedin" />
+          </a>
+        </div>
       </div>
       {(canPlay || canEdit)
         ? userInteractive
