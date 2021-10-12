@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+
 import { discardBoardChanges, startBoardSave } from '../../redux/actions/gameState.creator';
 
 import './editingInformation.styles.scss';
