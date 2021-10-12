@@ -1,3 +1,8 @@
+@import "../../styles/variables";
+
 .ball {
   pointer-events: none;
+  border-radius: 50%;
+  background-color: $ball-color;
+  box-shadow: 0 0 20px $detail-color;
 }
