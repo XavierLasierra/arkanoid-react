@@ -1,4 +1,4 @@
-import gameStateActions from './gameState.actions';
+import gameStateActions from "./gameState.actions";
 
 export function canPlayState() {
   return {
@@ -45,7 +45,7 @@ export function saveBoardChanges(data: number[][], saveBoard: number) {
   };
 }
 
-export function deleteBoard(data: Number) {
+export function deleteBoard(data: number) {
   return {
     type: gameStateActions.DELETE_BOARD,
     data,
