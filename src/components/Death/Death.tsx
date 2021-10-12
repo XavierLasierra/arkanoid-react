@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { IDeathProps } from '../../types/interfaces';
+import React, { useEffect, useState } from "react";
+import { IDeathProps } from "../../types/interfaces";
 
-import { DEATH_ANIMATION_TIME } from '../../constants/gameBoard.constants';
+import { DEATH_ANIMATION_TIME } from "../../constants/gameBoard.constants";
 
-import './death.styles.scss';
+import "./death.styles.scss";
 
 export default function Death({ lives, canPlay }: IDeathProps) {
   const [deathAnimation, setDeathAnimation] = useState(false);
@@ -20,7 +20,7 @@ export default function Death({ lives, canPlay }: IDeathProps) {
   }, [lives]);
 
   return (
-    <div className={`death-screen ${deathAnimation && 'death-screen--active'}`}>
+    <div className={`death-screen ${deathAnimation && "death-screen--active"}`}>
       {!canPlay && <p className="death-screen__game-over">START NEW GAME</p>}
     </div>
   );
