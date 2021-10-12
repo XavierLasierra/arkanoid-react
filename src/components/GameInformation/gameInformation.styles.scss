@@ -42,6 +42,13 @@
   }
 }
 
+.creator-information {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+}
+
 .web-title {
   &__main-title {
     color: $main-color;
@@ -53,6 +60,14 @@
     color: $main-color;
     font-family: $main-font;
     font-size: $big-size;
+  }
+}
+
+.social-networks {
+  &__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0.5rem;
   }
 }
 

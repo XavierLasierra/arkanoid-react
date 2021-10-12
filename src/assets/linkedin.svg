@@ -1,0 +1,10 @@
+<svg version="1.2" baseProfile="tiny-ps" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+	<title>linkedin</title>
+	<defs>
+		<image  width="64" height="64" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABAAQMAAACQp+OdAAAAAXNSR0IB2cksfwAAAAZQTFRF////AAAAVcLTfgAAAAJ0Uk5T/wDltzBKAAAAjElEQVR4nK3QMQ7DMAgFUCIPbOUIuUilXCk3aKQMvZarXMRbVsZstDbgSm4sZeifnmSwMQAXQlLCZ0iTYRkNepiBilsFBgOtXdQa76IvqH0rPbqDVQAuYTUATOXmD0YHOkIeA5/x7pBBsUlU7A6RNBccyAoOhjS0iPFQvFKLrYL/ifxlhjPQL/qru5A3cGDxZXpajJwAAAAASUVORK5CYII="/>
+	</defs>
+	<style>
+		tspan { white-space:pre }
+	</style>
+	<use id="Background" href="#img1" x="0" y="0" />
+</svg>
