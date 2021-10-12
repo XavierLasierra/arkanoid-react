@@ -23,3 +23,4 @@ export const DEATH_ANIMATION_TIME = 100;
 export const BACKGROUND_COLOR = "#000";
 export const MAIN_COLOR = "#FFF";
 export const STROKE_SIZE = 6;
+export const STROKE_SIZE_DEMO = 1;
