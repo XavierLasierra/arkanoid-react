@@ -57,17 +57,23 @@ export default function GamePage() {
     );
   }
 
-  useEffect(() => {
+  function ballReset() {
+    setBallDirection([0, -1]);
+    setMultiplier(1);
+    setIsGameActive(false);
+  }
+
+  function boardReset() {
     setGameMatrix(JSON.parse(JSON.stringify(boards[currentBoard])));
     setNumberOfBlocks(calculateNumberOfBlocks(boards[currentBoard]));
-
     setBallCoordinates([0, boards[currentBoard].length - 1]);
-    setBallDirection([0, -1]);
-
-    setMultiplier(1);
     setLives(3);
 
-    setIsGameActive(false);
+    ballReset();
+  }
+
+  useEffect(() => {
+    boardReset();
   }, [gameState]);
 
   useEffect(() => {
@@ -76,21 +82,26 @@ export default function GamePage() {
     }
   }, [save]);
 
-  function handleDohMatrixChange(coordinateX: number, matrix: number[]) {
-    const coordinate =
-      Math.ceil((coordinateX * dohMatrix.length) / gameBoardSize.width) - 1;
-    return matrix.map((position, index) =>
-      index >= coordinate - 1 && index <= coordinate + 1 ? 1 : 0
+  function calculateDohMatrix(coordinateX: number, matrix: number[]) {
+    const dohPosition = Math.floor(
+      (coordinateX * dohMatrix.length) / gameBoardSize.width
+    );
+
+    return matrix.map((_, index) =>
+      index >= dohPosition - 1 && index <= dohPosition + 1 ? 1 : 0
     );
   }
 
   function handleDohPosition(clientX: number) {
-    if (clientX < dohSize.width / 3) {
-      return dohSize.width / 3;
+    const dohLimitPosition = dohSize.width / 3;
+
+    if (clientX < dohLimitPosition) {
+      return dohLimitPosition;
     }
-    if (clientX > gameBoardSize.width - dohSize.width / 3) {
-      return gameBoardSize.width - dohSize.width / 3;
+    if (clientX > gameBoardSize.width - dohLimitPosition) {
+      return gameBoardSize.width - dohLimitPosition;
     }
+
     return clientX;
   }
 
@@ -99,12 +110,11 @@ export default function GamePage() {
 
     persist();
 
-    const coordinateX = handleDohPosition(
-      clientX - target.getBoundingClientRect().left
-    );
+    const offsetX = target.getBoundingClientRect().left;
+    const coordinateX = handleDohPosition(clientX - offsetX);
 
     setDohCoordinateX(coordinateX);
-    setDohMatrix(handleDohMatrixChange(coordinateX, dohMatrix));
+    setDohMatrix(calculateDohMatrix(coordinateX, dohMatrix));
   }
 
   function handleGameStart() {
@@ -113,13 +123,12 @@ export default function GamePage() {
         setScore(0);
       }
 
-      setIsGameActive(true);
-      const initialCoordinateX =
-        Math.ceil(
-          (dohCoordinateX * gameMatrix[0].length) / gameBoardSize.width
-        ) - 1;
-
+      const initialCoordinateX = Math.floor(
+        (dohCoordinateX * gameMatrix[0].length) / gameBoardSize.width
+      );
       setBallCoordinates([initialCoordinateX, ballCoordinates[1]]);
+
+      setIsGameActive(true);
     }
   }
 
@@ -128,72 +137,99 @@ export default function GamePage() {
   }
 
   function handleDeath() {
-    setBallDirection([0, -1]);
-    setMultiplier(1);
+    ballReset();
+
     if (lives === 0) {
       return handleEndGame();
     }
-    setLives(lives - 1);
-    return setIsGameActive(false);
+    return setLives(lives - 1);
   }
 
-  function blockBreak(coordX: number, coordY: number) {
+  function addScore(scoreAddition: number) {
+    setScore(score + scoreAddition);
+    setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
+  }
+
+  function numberOfBlocksCheck() {
+    if (numberOfBlocks === 1) {
+      return handleEndGame();
+    }
+
+    return setNumberOfBlocks(numberOfBlocks - 1);
+  }
+
+  function deleteBlockFromGameboard(coordX: number, coordY: number) {
     gameMatrix[coordY][coordX] = 0;
     setGameMatrix([...gameMatrix]);
-    setScore(score + BREAK_POINTS * multiplier);
     setParticleCoordinates([
       {
         coordX: coordX * (gameBoardSize.width / gameMatrix[0].length),
         coordY: coordY * (gameBoardSize.height / gameMatrix.length),
       },
     ]);
-    setMultiplier(multiplier <= 5 ? multiplier + 1 : 5);
-    if (numberOfBlocks === 1) {
-      return handleEndGame();
-    }
-    return setNumberOfBlocks(numberOfBlocks - 1);
   }
 
-  function nextTurn() {
-    const nextXCoordinate = ballCoordinates[0] + ballDirection[0];
-    const nextYCoordinate = ballCoordinates[1] + ballDirection[1];
-    let nextBallDirection = ballDirection;
-    if (gameMatrix[nextYCoordinate] === undefined) {
-      if (ballDirection[1] < 0) {
-        nextBallDirection = [nextBallDirection[0], -nextBallDirection[1]];
-      } else if (dohMatrix[ballCoordinates[0]] === 1) {
-        if (!dohMatrix[ballCoordinates[0] - 1]) {
-          nextBallDirection = [-1, -nextBallDirection[1]];
-        } else if (!dohMatrix[ballCoordinates[0] + 1]) {
-          nextBallDirection = [1, -ballDirection[1]];
+  function blockBreak(coordX: number, coordY: number) {
+    addScore(BREAK_POINTS * multiplier);
+    deleteBlockFromGameboard(coordX, coordY);
+    numberOfBlocksCheck();
+  }
+
+  function dohHitNextXBallDirection(currentBallCoordinateX: number) {
+    setMultiplier(1);
+
+    if (!dohMatrix[currentBallCoordinateX - 1]) {
+      return -1;
+    }
+    if (!dohMatrix[currentBallCoordinateX + 1]) {
+      return 1;
+    }
+    return 0;
+  }
+
+  function nextTurn(
+    [currentBallCoordinateX, currentBallCoordinateY]: number[],
+    [currentBallDirectionX, currentBallDirectionY]: number[],
+    currentGameMatrix: number[][]
+  ) {
+    const nextXCoordinate = currentBallCoordinateX + currentBallDirectionX;
+    const nextYCoordinate = currentBallCoordinateY + currentBallDirectionY;
+    let nextBallDirection = [currentBallDirectionX, currentBallDirectionY];
+
+    if (currentGameMatrix[nextYCoordinate] === undefined) {
+      if (currentBallDirectionY > 0) {
+        if (dohMatrix[currentBallCoordinateX] === 1) {
+          nextBallDirection[0] = dohHitNextXBallDirection(
+            currentBallCoordinateX
+          );
         } else {
-          nextBallDirection = [0, -ballDirection[1]];
+          return handleDeath();
         }
-        setMultiplier(1);
-      } else {
-        return handleDeath();
       }
-    } else if (gameMatrix[ballCoordinates[1]][nextXCoordinate] === undefined) {
+      nextBallDirection[1] *= -1;
+    } else if (
+      currentGameMatrix[currentBallCoordinateY][nextXCoordinate] === undefined
+    ) {
       nextBallDirection = [-nextBallDirection[0], nextBallDirection[1]];
-    } else if (gameMatrix[nextYCoordinate][ballCoordinates[0]] === 1) {
-      nextBallDirection = [ballDirection[0], -ballDirection[1]];
-      blockBreak(ballCoordinates[0], nextYCoordinate);
-    } else if (gameMatrix[ballCoordinates[1]][nextXCoordinate] === 1) {
-      nextBallDirection = [-ballDirection[0], ballDirection[1]];
-      blockBreak(nextXCoordinate, ballCoordinates[1]);
-    } else if (gameMatrix[nextYCoordinate][nextXCoordinate] === 1) {
-      nextBallDirection = [-ballDirection[0], -ballDirection[1]];
+    } else if (currentGameMatrix[nextYCoordinate][currentBallCoordinateX]) {
+      nextBallDirection = [currentBallDirectionX, -currentBallDirectionY];
+      blockBreak(currentBallCoordinateX, nextYCoordinate);
+    } else if (currentGameMatrix[currentBallCoordinateY][nextXCoordinate]) {
+      nextBallDirection = [-currentBallDirectionX, currentBallDirectionY];
+      blockBreak(nextXCoordinate, currentBallCoordinateY);
+    } else if (currentGameMatrix[nextYCoordinate][nextXCoordinate]) {
+      nextBallDirection = [-currentBallDirectionX, -currentBallDirectionY];
       blockBreak(nextXCoordinate, nextYCoordinate);
     }
     setBallDirection(nextBallDirection);
 
-    const finalX = ballCoordinates[0] + nextBallDirection[0];
-    const finalY = ballCoordinates[1] + nextBallDirection[1];
+    const finalX = currentBallCoordinateX + nextBallDirection[0];
+    const finalY = currentBallCoordinateY + nextBallDirection[1];
     if (
-      gameMatrix[finalY] &&
-      gameMatrix[finalY][finalX] === 0 &&
-      gameMatrix[ballCoordinates[1]][finalX] === 0 &&
-      gameMatrix[finalY][ballCoordinates[0]] === 0
+      currentGameMatrix[finalY] &&
+      currentGameMatrix[finalY][finalX] === 0 &&
+      currentGameMatrix[ballCoordinates[1]][finalX] === 0 &&
+      currentGameMatrix[finalY][ballCoordinates[0]] === 0
     ) {
       setMoveTime(100);
       return setBallCoordinates([finalX, finalY]);
@@ -204,7 +240,10 @@ export default function GamePage() {
 
   useEffect(() => {
     if (isGameActive) {
-      setTimeout(nextTurn, moveTime);
+      setTimeout(
+        () => nextTurn(ballCoordinates, ballDirection, gameMatrix),
+        moveTime
+      );
     }
   }, [ballCoordinates]);
 
