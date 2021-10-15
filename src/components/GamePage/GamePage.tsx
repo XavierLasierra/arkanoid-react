@@ -175,6 +175,18 @@ export default function GamePage() {
     numberOfBlocksCheck();
   }
 
+  function dohHitNextXBallDirection(currentBallCoordinateX: number) {
+    setMultiplier(1);
+
+    if (!dohMatrix[currentBallCoordinateX - 1]) {
+      return -1;
+    }
+    if (!dohMatrix[currentBallCoordinateX + 1]) {
+      return 1;
+    }
+    return 0;
+  }
+
   function nextTurn(
     [currentBallCoordinateX, currentBallCoordinateY]: number[],
     [currentBallDirectionX, currentBallDirectionY]: number[],
@@ -185,35 +197,27 @@ export default function GamePage() {
     let nextBallDirection = [currentBallDirectionX, currentBallDirectionY];
 
     if (currentGameMatrix[nextYCoordinate] === undefined) {
-      if (currentBallDirectionY < 0) {
-        nextBallDirection = [nextBallDirection[0], -nextBallDirection[1]];
-      } else if (dohMatrix[currentBallCoordinateX] === 1) {
-        if (!dohMatrix[currentBallCoordinateX - 1]) {
-          nextBallDirection = [-1, -nextBallDirection[1]];
-        } else if (!dohMatrix[currentBallCoordinateX + 1]) {
-          nextBallDirection = [1, -currentBallDirectionY];
+      if (currentBallDirectionY > 0) {
+        if (dohMatrix[currentBallCoordinateX] === 1) {
+          nextBallDirection[0] = dohHitNextXBallDirection(
+            currentBallCoordinateX
+          );
         } else {
-          nextBallDirection = [0, -currentBallDirectionY];
+          return handleDeath();
         }
-        setMultiplier(1);
-      } else {
-        return handleDeath();
       }
+      nextBallDirection[1] *= -1;
     } else if (
       currentGameMatrix[currentBallCoordinateY][nextXCoordinate] === undefined
     ) {
       nextBallDirection = [-nextBallDirection[0], nextBallDirection[1]];
-    } else if (
-      currentGameMatrix[nextYCoordinate][currentBallCoordinateX] === 1
-    ) {
+    } else if (currentGameMatrix[nextYCoordinate][currentBallCoordinateX]) {
       nextBallDirection = [currentBallDirectionX, -currentBallDirectionY];
       blockBreak(currentBallCoordinateX, nextYCoordinate);
-    } else if (
-      currentGameMatrix[currentBallCoordinateY][nextXCoordinate] === 1
-    ) {
+    } else if (currentGameMatrix[currentBallCoordinateY][nextXCoordinate]) {
       nextBallDirection = [-currentBallDirectionX, currentBallDirectionY];
       blockBreak(nextXCoordinate, currentBallCoordinateY);
-    } else if (currentGameMatrix[nextYCoordinate][nextXCoordinate] === 1) {
+    } else if (currentGameMatrix[nextYCoordinate][nextXCoordinate]) {
       nextBallDirection = [-currentBallDirectionX, -currentBallDirectionY];
       blockBreak(nextXCoordinate, nextYCoordinate);
     }
